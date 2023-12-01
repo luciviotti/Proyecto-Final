@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro de Alumnos</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 50px;
+        }
+
+        input, button {
+            padding: 10px;
+            font-size: 16px;
+            margin: 10px;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Registro de Alumnos con Materias Adeudadas</h1>
+    
+    <label for="nombre">Nombre del Alumno:</label>
+    <input type="text" id="nombre" placeholder="Nombre del alumno">
+
+    <br>
+
+    <label for="materias">Cantidad de Materias Adeudadas:</label>
+    <input type="number" id="materias" min="0" placeholder="Cantidad" onchange="cantidadMaterias()">
+
+    <br>
+
+    <label for="aprendizajes">Materia:</label>
+    <input type="text" id="aprendizajes" placeholder="Materia" onchange="agregarMateria()">
+
+    <br>
+
+    <button onclick="verificarMaterias()">Verificar Estado</button>
+
+    <h2 id="mensaje"></h2>
+
+    <script>
+        var materiasAdeudadas = 0;
+        var materias = []
+
+        function cantidadMaterias(){
+            materiasAdeudadas = parseInt(document.getElementById("materias").value);
+        }
+
+        function agregarMateria(){
+            materias.push(document.getElementById("aprendizajes").value);
+            document.getElementById("aprendizajes").value = ""
+        }
+
+        function verificarMaterias() {
+            if(document.getElementById("aprendizajes").value != ""){
+                agregarMateria();
+            }
+
+            let nombre = document.getElementById("nombre").value;
+            if (materiasAdeudadas == 0) {
+                document.getElementById("mensaje").innerText = nombre + " no adeuda materias. ¡Felicidades!";
+            } else {
+                if(materias.length != materiasAdeudadas){
+                    document.getElementById("mensaje").innerText = "Debe ingresar " + (materiasAdeudadas - materias.length) + " materia(s) más"
+                } else {
+                    let mensaje = nombre + " adeuda " + materiasAdeudadas + " materia(s). Debe ponerse al día lo antes posible. \n";
+                    mensaje += "Materias adeudadas: \n"
+                    for (let i = 0; i < materias.length; i++) {
+                        mensaje += "- " + materias[i] + "\n";
+                    }
+
+                    document.getElementById("mensaje").innerText = mensaje;
+                }
+            }
+        }
+    </script>
+</body>
+</html>
